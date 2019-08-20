@@ -1,0 +1,6 @@
+{
+    "dev": {
+        "port": "3000",
+        "db": "mongodb+srv://spushkovskiy:mdb12345678@devconnector-insxj.mongodb.net/kraftlake?retryWrites=true&w=majority"
+    }
+}
