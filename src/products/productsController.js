@@ -2,40 +2,85 @@ const db = require("./../../db/products.json");
 const Product = require("./productsModel");
 
 exports.getAllProducts = async (req, res) => {
-  const products = await Product.find();
-  console.log(products);
-  res.status(200).json({
-    status: "success",
-    products
-  });
+  try {
+    const products = await Product.find();
+    res.status(200).json({
+      status: "success",
+      results: products.length,
+      products
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error
+    });
+  }
 };
 
 exports.getProduct = async (req, res) => {
-  // const result = db.products.find(item => +item.id === +req.params.id);
-  const product = await Product.findOne({ _id: req.params.id });
-  res.status(200).json({
-    status: "success",
-    product
-  });
+  try {
+    const product = await Product.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      product
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error
+    });
+  }
 };
 
 exports.addNewProduct = async (req, res) => {
-  const product = await Product.create({
-    ...req.body
-  });
-  res.status(201).json({
-    status: "success",
-    data: {
+  try {
+    const product = await Product.create({
+      ...req.body
+    });
+    res.status(201).json({
+      status: "success",
+      data: {
+        product
+      }
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error
+    });
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    res.status(200).json({
+      status: "success",
       product
-    }
-  });
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error
+    });
+  }
 };
 
-exports.updateProduct = (req, res) => {
-  console.log(" Updete product");
-};
-
-exports.removeProduct = (req, res) => {
-  const product = db.products.find(item => +item.id === +req.params.id);
-  res.status(200).send(product);
+exports.removeProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndRemove(req.params.id);
+    res.status(204).json({
+      status: "success",
+      product
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error
+    });
+  }
 };

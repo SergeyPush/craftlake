@@ -1,0 +1,18 @@
+http://localhost:3000/products/
+
+###
+
+POST http://localhost:3000/products/
+content-type: application/json
+
+{
+    "image": [
+        "imgurl1",
+        "imgurl2"
+    ],
+    "name": "product 5",
+    "description": "description 5"
+}
+
+###
+
